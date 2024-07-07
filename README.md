@@ -44,7 +44,7 @@ Para utilizar este bot en tu servidor de Discord, sigue estos pasos:
 
 4. **Iniciar el bot**:
     ```bash
-    npm start
+    py o python bot.py
     ```
 
 ## Contribuciones
