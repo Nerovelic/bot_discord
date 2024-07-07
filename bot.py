@@ -90,7 +90,6 @@ async def help_command(interaction: discord.Interaction):
         "status - Muestra si el servidor de Minecraft está abierto o cerrado.\n"
         "time - Muestra los días que el servidor está abierto y cerrado.\n"
         "start - Sirve para abrir o iniciar el server.\n"
-        "stop - Sirve para detener o cerrar el server.\n"
         "help - Muestra esta lista de comandos."
     )
     await interaction.response.send_message(help_message)
