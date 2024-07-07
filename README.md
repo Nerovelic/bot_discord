@@ -55,6 +55,26 @@ Para utilizar este bot en tu servidor de Discord, sigue estos pasos:
     cd bot_discord
     npm install
     ```
+   **Instalar discord.py**:
+   ```bash
+    pip install discord.py
+    ```
+   **Instalar psutil**:
+   ```bash
+    pip install psutil
+    ```
+   **Instalar pytz**:
+   ```bash
+    pip install pytz
+    ```
+    **Instalar unidecode**:
+   ```bash
+    pip install unidecode
+    ```
+   **Instalar python-dotenv**:
+   ```bash
+    pip install python-dotenv
+    ```
 
 3. **Configurar el bot**:
     - Crea el archivo `.env` e edítalo para agregar tu token de Discord y GUILD_ID de tu grupo de discord para que el bot funcione.
