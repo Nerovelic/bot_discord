@@ -40,7 +40,7 @@ Para utilizar este bot en tu servidor de Discord, sigue estos pasos:
     ```
 
 3. **Configurar el bot**:
-    - Renombra el archivo `.env.example` a `.env` y edítalo para agregar tu token de Discord y otros detalles de configuración necesarios.
+    - Crea el archivo `.env` e edítalo para agregar tu token de Discord y GUILD_ID de tu grupo de discord para que el bot funcione.
 
 4. **Iniciar el bot**:
     ```bash
