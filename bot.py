@@ -206,5 +206,22 @@ async def tiempo(ctx):
     
     await ctx.send(response_message)
 
+# EE del servidor le hace kick a todos los jugadores
+bot.command(name="nuke", description="Le hace kick a todos los jugadores y se cierra el server")
+async def nuke(ctx):
+
+    await ctx.send("🚨 Alerta 🚨 se a activado el nuke en el servidor...")
+
+    # Llamada al script oppenheimer.py
+    subprocess.Popen(["python", "C:\\Users\\pc\\Desktop\\bot_discord\\oppenheimer.py"])
+
+        # Espera 11 minutos
+    await asyncio.sleep(660)  # 660 segundos = 11 minutos
+
+    if is_process_running():
+        await ctx.followup.send("Tuvieron suerte la nuke se detuvo a antes de su explosion ☠️")
+    else:
+        await ctx.followup.send("☢️ Nuke detonada ☢️")
+
 # Ejecutar el bot
 bot.run(TOKEN)
