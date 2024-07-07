@@ -1,0 +1,6 @@
+        "Comandos disponibles:"
+        "status - Muestra si el servidor de Minecraft está abierto o cerrado."
+        "time - Muestra los días que el servidor está abierto y cerrado."
+        "start - Sirve para abrir o iniciar el server."
+        "stop - Sirve para detener o cerrar el server."
+        "help - Muestra esta lista de comandos."
