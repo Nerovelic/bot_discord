@@ -21,7 +21,7 @@ Este bot de Discord permite administrar fácilmente un servidor de Minecraft con
   - **Descripción**: Este comando muestra una lista de todos los comandos disponibles y sus descripciones, proporcionando una referencia rápida para los usuarios.
 
 <details>
-  <summary>## Comandos ocultos</summary>
+  <summary> Comandos ocultos</summary>
 
   - **`stop`**: Sirve para detener o cerrar el server.
   - **Uso**: `.stop`
