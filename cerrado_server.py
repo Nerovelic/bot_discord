@@ -2,38 +2,67 @@ import pyautogui
 import time
 import subprocess
 
-# Anuncio de que el servidor se cerrará en 10 minutos
-pyautogui.write('say El servidor se va cerrar en 10 minutos')
-pyautogui.press('enter')
-
-# Espera 5 minutos
-time.sleep(300)  # 300 segundos = 5 minutos
-
-# Anuncio de que el servidor se cerrará en 5 minutos
-pyautogui.write('say El servidor se va cerrar en 5 minutos')
-pyautogui.press('enter')
+def countdown_and_shutdown():
+    # Anuncio de que el servidor se cerrará en 10 minutos
+    pyautogui.write('say El servidor se va cerrar en 10 minutos')
+    pyautogui.press('enter')
     
-# Espera otros 5 minutos
-time.sleep(300)  # 300 segundos = 5 minutos
+    # Espera 5 minutos
+    time.sleep(300)  # 300 segundos = 5 minutos
+    
+    # Anuncio de que el servidor se cerrará en 5 minutos
+    pyautogui.write('say El servidor se va cerrar en 5 minutos')
+    pyautogui.press('enter')
+    
+    # Espera otros 4 minutos
+    time.sleep(240)  # 240 segundos = 4 minutos
 
-# Anuncio de que el servidor se cerrarásay El servidor se 
-pyautogui.write('say Deteniendo el servidor...')
-pyautogui.press('enter')
+    # Anuncio de que el servidor se cerrará en 1 minuto
+    pyautogui.write('say El servidor se va cerrar en 1 minuto')
+    pyautogui.press('enter')
 
-time.sleep(5)
+    # Cuenta regresiva de 1 minuto con mensajes específicos
+    countdown_messages = [
+        "Quedan 45 segundos para cerrar el servidor.",
+        "Quedan 30 segundos para cerrar el servidor.",
+        "Quedan 15 segundos para cerrar el servidor.",
+        "Quedan 5 segundos para cerrar el servidor.",
+        "Deteniendo el servidor..."
+    ]
 
-pyautogui.write('stop')
-pyautogui.press('enter')
+    intervals = [15, 15, 15, 10] 
 
-time.sleep(5)
+    for message, interval in zip(countdown_messages, intervals):
+        pyautogui.write(f'say {message}')
+        pyautogui.press('enter')
+        print(message)  # Para verificar en la consola
+        time.sleep(interval)
+    
+    # Aquí agregas el código necesario para detener el servidor
+    time.sleep(5)
 
-pyautogui.write('a')
-pyautogui.press('enter')
+    # Anuncio de que el servidor se cerrarásay El servidor se 
+    pyautogui.write('say Deteniendo el servidor...')
+    pyautogui.press('enter')
 
-time.sleep(5)
+    # Aquí agregas el código necesario para detener el servidor
+    time.sleep(5)
 
-# Comando de PowerShell para cerrar la ventana actual
-command = 'Stop-Process -Name "powershell"'
+    pyautogui.write('stop')
+    pyautogui.press('enter')
 
-# Ejecutar el comando de PowerShell
-subprocess.run(["powershell", "-Command", command], shell=True)
+    time.sleep(5)
+
+    pyautogui.write('a')
+    pyautogui.press('enter')
+
+    time.sleep(5)
+
+    # Comando de PowerShell para cerrar la ventana actual
+    command = 'Stop-Process -Name "powershell"'
+
+    # Ejecutar el comando de PowerShell
+    subprocess.run(["powershell", "-Command", command], shell=True)
+
+# Llamar a la función de cuenta regresiva y cierre del servidor
+countdown_and_shutdown()
