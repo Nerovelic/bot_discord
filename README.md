@@ -53,7 +53,6 @@ Para utilizar este bot en tu servidor de Discord, sigue estos pasos:
 2. **Instalar dependencias**:
     ```bash
     cd bot_discord
-    npm install
     ```
    **Instalar discord.py**:
    ```bash
