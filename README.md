@@ -16,13 +16,30 @@ Este bot de Discord permite administrar fácilmente un servidor de Minecraft con
   - **Uso**: `/start`
   - **Descripción**: Este comando permite iniciar el servidor de Minecraft, poniéndolo en línea para que los jugadores puedan conectarse.
 
-- **`stop`**: Sirve para detener o cerrar el servidor.
-  - **Uso**: `/stop`
-  - **Descripción**: Utiliza este comando para detener el servidor de Minecraft de manera segura, cerrándolo para evitar que los jugadores se conecten.
-
 - **`help`**: Muestra esta lista de comandos.
   - **Uso**: `/help`
   - **Descripción**: Este comando muestra una lista de todos los comandos disponibles y sus descripciones, proporcionando una referencia rápida para los usuarios.
+
+<details>
+  <summary>## Comandos ocultos</summary>
+
+  - **`stop`**: Sirve para detener o cerrar el server.
+  - **Uso**: `.stop`
+  - **Descripción**: Este commando lo que hace es detener o cerrar el server de minecraft de manera segura.
+
+- **`tiempo`**: Muestra el tiempo de actividad del servidor de Minecraft.
+  - **Uso**: `.tiempo`
+  - **Descripción**: Utiliza este comando para obtener información sobre el tiempo total que el servidor ha estado en funcionamiento desde su última puesta en marcha.
+
+- **`sincronizar`**: Sincroniza el bot de discord con la pc.
+  - **Uso**: `.sincronizar`
+  - **Descripción**: Este comando se utiliza para sincronizar los comandos / con el bot de pc.
+    
+- **`nuke`**: Le hace kick a todos los jugadores del servidor.
+  - **Uso**: `.nuke`
+  - **Descripción**: Este commando hace kick a los jugadores del servidores.
+
+</details>
 
 ## Instalación y Configuración
 
@@ -50,10 +67,6 @@ Para utilizar este bot en tu servidor de Discord, sigue estos pasos:
 ## Contribuciones
 
 ¡Las contribuciones son bienvenidas! Si deseas colaborar, por favor realiza un fork del repositorio y crea una nueva rama para tus modificaciones. Luego, envía un pull request con una descripción detallada de los cambios.
-
-## Licencia
-
-Este proyecto está bajo la Licencia MIT. Para más detalles, consulta el archivo [LICENSE](LICENSE).
 
 ---
 
