@@ -153,7 +153,7 @@ async def on_message(message):
 
 # Comando de sincronización con prefijo para cerrar el servidor (stop)
 @bot.command(name="stop", description="Sirve para detener o cerrar el server")
-async def stop(interaction: discord.Interaction):
+async def stop(ctx):
 
     # # Confirmación de recepción del comando en Discord
     # await interaction.response.send_message("El servidor se va a cerrar en 10 minutos...")
@@ -162,7 +162,7 @@ async def stop(interaction: discord.Interaction):
     # await interaction.response.send_message("El servidor se va a cerrar en 5 minutos...")
 
     # Confirmación de recepción del comando
-    await interaction.response.send_message("Deteniendo el servidor...")
+    await ctx.send("Deteniendo el servidor...")
 
     # Llamada al script cerrado_server.py
     subprocess.Popen(["python", "C:\\Users\\pc\\Desktop\\bot_discord\\cerrado_server.py"])
@@ -171,9 +171,9 @@ async def stop(interaction: discord.Interaction):
     await asyncio.sleep(660)  # 660 segundos = 11 minutos
 
     if is_process_running():
-        await interaction.followup.send("Hay un problema y no se cerró el servidor.")
+        await ctx.followup.send("Hay un problema y no se cerró el servidor.")
     else:
-        await interaction.followup.send("Servidor detenido.")
+        await ctx.followup.send("Servidor detenido.")
 
 # Comando de sincronización con prefijo
 @bot.command(name="sincronizar", description="Sincroniza el bot")
