@@ -98,24 +98,28 @@ async def help_command(interaction: discord.Interaction):
 # Comando /start
 @bot.tree.command(name="start", description="Inicia el proceso de PowerShell si no hay ninguno en ejecución")
 async def start(interaction: discord.Interaction):
-    if is_process_running():
-        await interaction.response.send_message("No se puede iniciar un nuevo proceso de PowerShell porque ya hay uno en ejecución.")
+
+    if not is_server_open():
+        await interaction.response.send_message("El comando no está disponible")
     else:
+        if is_process_running():
+            await interaction.response.send_message("No se puede iniciar un nuevo proceso de PowerShell porque ya hay uno en ejecución.")
+        else:
         # Confirmación de recepción del comando
-        await interaction.response.send_message("El server se está iniciando...")
+            await interaction.response.send_message("El server se está iniciando...")
         
-        try:
-            # Cambiar el directorio de trabajo y llamar al script start.ps1
-            os.chdir("C:\\Users\\pc\\Desktop\\server2")
-            subprocess.run(["powershell", "-Command", "Start-Process powershell -ArgumentList '-NoExit', '-File', 'C:\\Users\\pc\\Desktop\\server2\\start.ps1'"])
+            try:
+                # Cambiar el directorio de trabajo y llamar al script start.ps1
+                os.chdir("C:\\Users\\pc\\Desktop\\server2")
+                subprocess.run(["powershell", "-Command", "Start-Process powershell -ArgumentList '-NoExit', '-File', 'C:\\Users\\pc\\Desktop\\server2\\start.ps1'"])
             
-            # Verificar si el proceso de PowerShell se inició correctamente
-            if is_process_running():
-                await interaction.followup.send("Servidor abierto.")
-            else:
-                await interaction.followup.send("Ocurrió un problema, el servidor no se abrió.")
-        except Exception as e:
-            await interaction.followup.send(f"Hubo un error al iniciar el proceso de PowerShell: {e}")
+                # Verificar si el proceso de PowerShell se inició correctamente
+                if is_process_running():
+                    await interaction.followup.send("Servidor abierto.")
+                else:
+                    await interaction.followup.send("Ocurrió un problema, el servidor no se abrió.")
+            except Exception as e:
+                await interaction.followup.send(f"Hubo un error al iniciar el proceso de PowerShell: {e}")
 
 # Evento para detectar mensajes y responder con el estado del servidor
 @bot.event
@@ -206,10 +210,13 @@ async def tiempo(ctx):
     await ctx.send(response_message)
 
 # EE del servidor le hace kick a todos los jugadores
-bot.command(name="nuke", description="Le hace kick a todos los jugadores y se cierra el server")
+@bot.command(name="nuke", description="Le hace kick a todos los jugadores y se cierra el server")
 async def nuke(ctx):
-
-    await ctx.send("🚨 Alerta 🚨 se a activado el nuke en el servidor...")
+    
+    if not is_server_open():
+        await ctx.send("El comando no está disponible")
+    else:
+        await ctx.send("🚨 Alerta 🚨 se a activado el nuke en el servidor...")
 
     # Llamada al script oppenheimer.py
     subprocess.Popen(["python", "C:\\Users\\pc\\Desktop\\bot_discord\\oppenheimer.py"])
