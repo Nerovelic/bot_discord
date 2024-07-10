@@ -35,7 +35,7 @@ def run_shutdown_logic():
 
             # Programar el apagado
             os.system('shutdown /s /t 0')  # Apagar inmediatamente
-            print(f"Computadora se apagará en 0 segundos.")
+            print("Computadora se apagará.")
         else:
             print("Error en el cálculo del tiempo hasta el próximo miércoles.")
     else:
