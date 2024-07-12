@@ -157,7 +157,7 @@ async def on_message(message):
     
     await bot.process_commands(message)
 
-# Comando de sincronización con prefijo para cerrar el servidor (stop)
+# Comando con prefijo para cerrar el servidor (stop)
 @bot.command(name="stop", description="Sirve para detener o cerrar el server")
 async def stop(ctx):
 
