@@ -113,6 +113,9 @@ async def start(interaction: discord.Interaction):
                 os.chdir("C:\\Users\\pc\\Desktop\\server2")
                 subprocess.run(["powershell", "-Command", "Start-Process powershell -ArgumentList '-NoExit', '-File', 'C:\\Users\\pc\\Desktop\\server2\\start.ps1'"])
             
+                # Espera 11 minutos
+                await asyncio.sleep(660)  # 660 segundos = 11 minutos
+
                 # Verificar si el proceso de PowerShell se inició correctamente
                 if is_process_running():
                     await interaction.followup.send("Servidor abierto.")
