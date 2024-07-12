@@ -68,11 +68,11 @@ def is_server_open():
 @bot.tree.command(name="status", description="Muestra si el servidor de Minecraft está abierto o cerrado")
 async def status(interaction: discord.Interaction):
     if is_server_open() and is_process_running():
-        await interaction.response.send_message("El servidor de Minecraft está abierto.")
+        await interaction.response.send_message(f"El servidor de Minecraft está abierto, {interaction.user.mention}.")
     elif is_server_open() and not is_process_running():
-        await interaction.response.send_message("El servidor de Minecraft no está disponible.")
+        await interaction.response.send_message(f"El servidor de Minecraft no está disponible, {interaction.user.mention}.")
     else:
-        await interaction.response.send_message("El servidor de Minecraft está cerrado.")
+        await interaction.response.send_message(f"El servidor de Minecraft está cerrado, {interaction.user.mention}.")
 
 # Comando /time
 @bot.tree.command(name="time", description="Muestra los días que el servidor está abierto y cerrado")
@@ -103,7 +103,7 @@ async def start(interaction: discord.Interaction):
         await interaction.response.send_message("El comando no está disponible")
     else:
         if is_process_running():
-            await interaction.response.send_message("No se puede iniciar un nuevo proceso de PowerShell porque ya hay uno en ejecución.")
+            await interaction.response.send_message(f"No se puede iniciar un nuevo proceso de PowerShell porque ya hay uno en ejecución, {interaction.user.mention}.")
         else:
         # Confirmación de recepción del comando
             await interaction.response.send_message("El server se está iniciando...")
@@ -118,9 +118,9 @@ async def start(interaction: discord.Interaction):
 
                 # Verificar si el proceso de PowerShell se inició correctamente
                 if is_process_running():
-                    await interaction.followup.send("Servidor abierto.")
+                    await interaction.followup.send(f"Servidor abierto, {interaction.user.mention}.")
                 else:
-                    await interaction.followup.send("Ocurrió un problema, el servidor no se abrió.")
+                    await interaction.followup.send(f"Ocurrió un problema, el servidor no se abrió, {interaction.user.mention}.")
             except Exception as e:
                 await interaction.followup.send(f"Hubo un error al iniciar el proceso de PowerShell: {e}")
 
@@ -149,11 +149,11 @@ async def on_message(message):
         server_open = is_server_open()
         process_running = is_process_running()
         if server_open and process_running:
-            await message.channel.send("El servidor de Minecraft está abierto.")
+            await message.channel.send(f"El servidor de Minecraft está abierto, {message.author.mention}.")
         elif server_open and not process_running:
-            await message.channel.send("El servidor de Minecraft no está disponible.")
+            await message.channel.send(f"El servidor de Minecraft no está disponible, {message.author.mention}.")
         else:
-            await message.channel.send("El servidor de Minecraft está cerrado.")
+            await message.channel.send(f"El servidor de Minecraft está cerrado, {message.author.mention}.")
     
     await bot.process_commands(message)
 
@@ -180,9 +180,9 @@ async def stop(ctx):
         await asyncio.sleep(660)  # 660 segundos = 11 minutos
 
         if is_process_running():
-            await ctx.followup.send("Hay un problema y no se cerró el servidor.")
+            await ctx.followup.send(f"Hay un problema y no se cerró el servidor, {ctx.author.mention}.")
         else:
-            await ctx.followup.send("Servidor detenido.")
+            await ctx.followup.send(f"Servidor detenido, {ctx.author.mention}.")
 
 # Comando de sincronización con prefijo
 @bot.command(name="sincronizar", description="Sincroniza el bot")
