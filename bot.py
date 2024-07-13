@@ -165,10 +165,10 @@ async def start(interaction: discord.Interaction):
         if is_process_running():
             await interaction.followup.send(f"Servidor abierto, {interaction.user.mention}.")
         else:
-            await send_error_with_file(interaction, f"Ocurrió un problema, el servidor no se abrió, {interaction.user.mention}.", 'C:\\Users\\pc\\Desktop\\bot_discord\\crashreport')
+            await send_error_with_file(interaction, f"Ocurrió un problema, el servidor no se abrió, {interaction.user.mention}.", 'C:\\Users\\pc\\Desktop\\server2\\crash-reports')
 
     except Exception as e:
-        await send_error_with_file(interaction, f"Hubo un error al iniciar el proceso de PowerShell: {e}, {interaction.user.mention}.", 'C:\\Users\\pc\\Desktop\\bot_discord\\crashreport')
+        await send_error_with_file(interaction, f"Hubo un error al iniciar el proceso de PowerShell: {e}, {interaction.user.mention}.", 'C:\\Users\\pc\\Desktop\\server2\\crash-reports')
 
 # Evento para detectar mensajes y responder con el estado del servidor
 @bot.event
