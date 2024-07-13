@@ -85,15 +85,6 @@ def is_server_open():
     }
     day_name_es = dias_semana[day_name]
     return day_name_es  in dias_abiertos
-
-# Función para encontrar el último archivo .txt en el directorio crashreport
-def get_latest_txt_file(directory):
-    txt_files = [f for f in os.listdir(directory) if f.endswith('.txt')]
-    if not txt_files:
-        return None
-    latest_file = max(txt_files, key=lambda x: os.path.getmtime(os.path.join(directory, x)))
-    return os.path.join(directory, latest_file)
-
     
 # Comando /status
 @bot.tree.command(name="status", description="Muestra si el servidor de Minecraft está abierto o cerrado")
@@ -126,49 +117,34 @@ async def help_command(interaction: discord.Interaction):
     await interaction.response.send_message(help_message)
 
 
-# Función para cambiar el directorio y ejecutar el script de PowerShell
-def start_powershell_script():
-    os.chdir("C:\\Users\\pc\\Desktop\\server2")
-    subprocess.run(["powershell", "-Command", "Start-Process powershell -ArgumentList '-NoExit', '-File', 'C:\\Users\\pc\\Desktop\\server2\\start.ps1'"])
-
-# Función para enviar mensaje de error con el archivo .txt
-async def send_error_with_file(interaction, message, directory):
-    latest_txt_file = get_latest_txt_file(directory)
-    if latest_txt_file:
-        await interaction.followup.send(
-            message,
-            file=discord.File(latest_txt_file)
-        )
-    else:
-        await interaction.followup.send(message)
-
 # Comando /start
 @bot.tree.command(name="start", description="Inicia el proceso de PowerShell si no hay ninguno en ejecución")
 async def start(interaction: discord.Interaction):
+
     if not is_server_open():
         await interaction.response.send_message("El comando no está disponible")
-        return
-
-    if is_process_running():
-        await interaction.response.send_message(f"No se puede iniciar un nuevo proceso de PowerShell porque ya hay uno en ejecución, {interaction.user.mention}.")
-        return
-
-    await interaction.response.send_message("El server se está iniciando...")
-
-    try:
-        start_powershell_script()
-
-        # Espera 11 minutos
-        await asyncio.sleep(660)  # 660 segundos = 11 minutos
-
-        # Verificar si el proceso de PowerShell se inició correctamente
+    else:
         if is_process_running():
-            await interaction.followup.send(f"Servidor abierto, {interaction.user.mention}.")
+            await interaction.response.send_message(f"No se puede iniciar un nuevo proceso de PowerShell porque ya hay uno en ejecución, {interaction.user.mention}.")
         else:
-            await send_error_with_file(interaction, f"Ocurrió un problema, el servidor no se abrió, {interaction.user.mention}.", 'C:\\Users\\pc\\Desktop\\bot_discord\\crashreport')
+        # Confirmación de recepción del comando
+            await interaction.response.send_message("El server se está iniciando...")
+        
+            try:
+                # Cambiar el directorio de trabajo y llamar al script start.ps1
+                os.chdir("C:\\Users\\pc\\Desktop\\server2")
+                subprocess.run(["powershell", "-Command", "Start-Process powershell -ArgumentList '-NoExit', '-File', 'C:\\Users\\pc\\Desktop\\server2\\start.ps1'"])
+            
+                # Espera 11 minutos
+                await asyncio.sleep(660)  # 660 segundos = 11 minutos
 
-    except Exception as e:
-        await send_error_with_file(interaction, f"Hubo un error al iniciar el proceso de PowerShell: {e}, {interaction.user.mention}.", 'C:\\Users\\pc\\Desktop\\bot_discord\\crashreport')
+                # Verificar si el proceso de PowerShell se inició correctamente
+                if is_process_running():
+                    await interaction.followup.send(f"Servidor abierto, {interaction.user.mention}.")
+                else:
+                    await interaction.followup.send(f"Ocurrió un problema, el servidor no se abrió, {interaction.user.mention}.")
+            except Exception as e:
+                await interaction.followup.send(f"Hubo un error al iniciar el proceso de PowerShell: {e}")
 
 # Evento para detectar mensajes y responder con el estado del servidor
 @bot.event
