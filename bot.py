@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands,tasks
 import psutil
 from datetime import datetime
 import pytz
@@ -8,6 +8,7 @@ import os
 import asyncio
 from unidecode import unidecode
 from dotenv import load_dotenv
+import requests
 
 # Cargar variables de entorno desde el archivo .env
 load_dotenv()
@@ -32,6 +33,7 @@ dias_abiertos = {"lunes", "martes", "viernes", "sábado", "domingo"}
 @bot.event
 async def on_ready():
     print(f'Bot conectado como {bot.user}')
+    check_internet.start()  # Iniciar el bucle de comprobación de Internet
     try:
         synced = await bot.tree.sync()
         print(f"Synced {len(synced)} command(s)")
@@ -47,6 +49,26 @@ def is_process_running():
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
     return False
+
+# Función para verificar la conexión a Internet
+def check_internet_connection():
+    try:
+        response = requests.get("https://www.google.com", timeout=5)
+        return response.status_code == 200
+    except requests.ConnectionError:
+        return False
+
+# Tarea para comprobar periódicamente la conexión a Internet
+@tasks.loop(seconds=10)  # Comprobar cada 10 segundos
+async def check_internet():
+    if not check_internet_connection():
+        print("No internet connection. Attempting to reconnect...")
+        await bot.logout()
+        while not check_internet_connection():
+            await asyncio.sleep(5)  # Espere 5 segundos antes de volver a comprobar
+        print("Internet connection restored. Reconnecting...")
+        await bot.login(TOKEN)
+        await bot.connect()
 
 # Función para verificar si el servidor está abierto o cerrado
 def is_server_open():
@@ -132,14 +154,18 @@ async def on_message(message):
 
     # Frases clave para verificar el estado del servidor
     frases_clave = [
-        "el server esta abierto?",
-        "el server esta abierto",
-        "esta abierto el server?",
-        "el server de minecraft esta abierto?",
         "el server está abierto?",
-        "el server está abierto",
+        "el server esta abierto?",
         "está abierto el server?",
-        "el server de minecraft está abierto?"
+        "esta abierto el server?",
+        "el server de minecraft está abierto?",
+        "el server de minecraft esta abierto?",
+        "el servidor está abierto?",
+        "el servidor esta abierto?",
+        "el servidor de minecraft está abierto?",
+        "el servidor de minecraft esta abierto?",
+        "está abierto el servidor?",
+        "esta abierto el servidor?"
     ]
 
     # Convertir el mensaje a minúsculas para facilitar la comparación
