@@ -74,6 +74,10 @@ Para utilizar este bot en tu servidor de Discord, sigue estos pasos:
    ```bash
     pip install python-dotenv
     ```
+   **Instalar requests**:
+   ```bash
+    pip install requests
+    ```
 
 3. **Configurar el bot**:
     - Crea el archivo `.env` e edítalo para agregar tu token de Discord y GUILD_ID de tu grupo de discord para que el bot funcione.
