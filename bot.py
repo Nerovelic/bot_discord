@@ -3,12 +3,13 @@ from discord.ext import commands,tasks
 import psutil
 from datetime import datetime
 import pytz
-import subprocess
 import os
 import asyncio
 from unidecode import unidecode
 from dotenv import load_dotenv
 import requests
+import logging
+from google.cloud import logging as cloud_logging
 
 # Cargar variables de entorno desde el archivo .env
 load_dotenv()
@@ -16,6 +17,13 @@ load_dotenv()
 # Configuración del bot
 TOKEN = os.getenv('TOKEN')
 GUILD_ID = int(os.getenv('GUILD_ID'))
+
+# Set up Google Cloud logging
+cloud_logging_client = cloud_logging.Client()
+cloud_logging_client.setup_logging()
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -86,15 +94,6 @@ def is_server_open():
     day_name_es = dias_semana[day_name]
     return day_name_es  in dias_abiertos
 
-# Función para encontrar el último archivo .txt en el directorio crashreport
-def get_latest_txt_file(directory):
-    txt_files = [f for f in os.listdir(directory) if f.endswith('.txt')]
-    if not txt_files:
-        return None
-    latest_file = max(txt_files, key=lambda x: os.path.getmtime(os.path.join(directory, x)))
-    return os.path.join(directory, latest_file)
-
-    
 # Comando /status
 @bot.tree.command(name="status", description="Muestra si el servidor de Minecraft está abierto o cerrado")
 async def status(interaction: discord.Interaction):
@@ -125,50 +124,10 @@ async def help_command(interaction: discord.Interaction):
     )
     await interaction.response.send_message(help_message)
 
-
-# Función para cambiar el directorio y ejecutar el script de PowerShell
-def start_powershell_script():
-    os.chdir("C:\\Users\\pc\\Desktop\\server2")
-    subprocess.run(["powershell", "-Command", "Start-Process powershell -ArgumentList '-NoExit', '-File', 'C:\\Users\\pc\\Desktop\\server2\\start.ps1'"])
-
-# Función para enviar mensaje de error con el archivo .txt
-async def send_error_with_file(interaction, message, directory):
-    latest_txt_file = get_latest_txt_file(directory)
-    if latest_txt_file:
-        await interaction.followup.send(
-            message,
-            file=discord.File(latest_txt_file)
-        )
-    else:
-        await interaction.followup.send(message)
-
 # Comando /start
 @bot.tree.command(name="start", description="Inicia el proceso de PowerShell si no hay ninguno en ejecución")
 async def start(interaction: discord.Interaction):
-    if not is_server_open():
-        await interaction.response.send_message("El comando no está disponible")
-        return
-
-    if is_process_running():
-        await interaction.response.send_message(f"No se puede iniciar un nuevo proceso de PowerShell porque ya hay uno en ejecución, {interaction.user.mention}.")
-        return
-
-    await interaction.response.send_message("El server se está iniciando...")
-
-    try:
-        start_powershell_script()
-
-        # Espera 11 minutos
-        await asyncio.sleep(660)  # 660 segundos = 11 minutos
-
-        # Verificar si el proceso de PowerShell se inició correctamente
-        if is_process_running():
-            await interaction.followup.send(f"Servidor abierto, {interaction.user.mention}.")
-        else:
-            await send_error_with_file(interaction, f"Ocurrió un problema, el servidor no se abrió, {interaction.user.mention}.", 'C:\\Users\\pc\\Desktop\\server2\\crash-reports')
-
-    except Exception as e:
-        await send_error_with_file(interaction, f"Hubo un error al iniciar el proceso de PowerShell: {e}, {interaction.user.mention}.", 'C:\\Users\\pc\\Desktop\\server2\\crash-reports')
+    await interaction.response.send_message("El comando no está disponible")
 
 # Evento para detectar mensajes y responder con el estado del servidor
 @bot.event
@@ -210,29 +169,7 @@ async def on_message(message):
 # Comando con prefijo para cerrar el servidor (stop)
 @bot.command(name="stop", description="Sirve para detener o cerrar el server")
 async def stop(ctx):
-
-    # # Confirmación de recepción del comando en Discord
-    # await interaction.response.send_message("El servidor se va a cerrar en 10 minutos...")
-
-    # # Confirmación en Discord
-    # await interaction.response.send_message("El servidor se va a cerrar en 5 minutos...")
-
-    # Confirmación de recepción del comando
-    if not is_server_open():
-        await ctx.send("El comando no está disponible")
-    else:
-        await ctx.send("Deteniendo el servidor...")
-
-        # Llamada al script cerrado_server.py
-        subprocess.Popen(["python", "C:\\Users\\pc\\Desktop\\bot_discord\\cerrado_server.py"])
-
-        # Espera 11 minutos
-        await asyncio.sleep(660)  # 660 segundos = 11 minutos
-
-        if is_process_running():
-            await ctx.followup.send(f"Hay un problema y no se cerró el servidor, {ctx.author.mention}.")
-        else:
-            await ctx.followup.send(f"Servidor detenido, {ctx.author.mention}.")
+    await ctx.send("El comando no está disponible")
 
 # Comando de sincronización con prefijo
 @bot.command(name="sincronizar", description="Sincroniza el bot")
@@ -268,22 +205,7 @@ async def tiempo(ctx):
 # EE del servidor le hace kick a todos los jugadores
 @bot.command(name="nuke", description="Le hace kick a todos los jugadores y se cierra el server")
 async def nuke(ctx):
-    
-    if not is_server_open():
-        await ctx.send("El comando no está disponible")
-    else:
-        await ctx.send("🚨 Alerta 🚨 se a activado el nuke en el servidor...")
-
-    # Llamada al script oppenheimer.py
-    subprocess.Popen(["python", "C:\\Users\\pc\\Desktop\\bot_discord\\oppenheimer.py"])
-
-        # Espera 11 minutos
-    await asyncio.sleep(660)  # 660 segundos = 11 minutos
-
-    if is_process_running():
-        await ctx.followup.send("Tuvieron suerte la nuke se detuvo a antes de su explosion ☠️")
-    else:
-        await ctx.followup.send("☢️ Nuke detonada ☢️")
+    await ctx.send("El comando no está disponible")
 
 # Ejecutar el bot
 bot.run(TOKEN)
