@@ -12,7 +12,7 @@ Este bot de Discord permite administrar fácilmente un servidor de Minecraft con
   - **Uso**: `/time`
   - **Descripción**: Utiliza este comando para obtener un registro de los días en que el servidor ha estado operativo o cerrado.
 
-- **`start`**: Sirve para abrir o iniciar el servidor.
+- **`start`**: Sirve para abrir o iniciar el servidor. (no disponible en la nube)
   - **Uso**: `/start`
   - **Descripción**: Este comando permite iniciar el servidor de Minecraft, poniéndolo en línea para que los jugadores puedan conectarse.
 
@@ -23,7 +23,7 @@ Este bot de Discord permite administrar fácilmente un servidor de Minecraft con
 <details>
   <summary> Comandos ocultos</summary>
 
-  - **`stop`**: Sirve para detener o cerrar el server.
+  - **`stop`**: Sirve para detener o cerrar el server. (no disponible en la nube)
   - **Uso**: `.stop`
   - **Descripción**: Este commando lo que hace es detener o cerrar el server de minecraft de manera segura.
 
@@ -35,7 +35,7 @@ Este bot de Discord permite administrar fácilmente un servidor de Minecraft con
   - **Uso**: `.sincronizar`
   - **Descripción**: Este comando se utiliza para sincronizar los comandos / con el bot de pc.
     
-- **`nuke`**: Le hace kick a todos los jugadores del servidor.
+- **`nuke`**: Le hace kick a todos los jugadores del servidor. (no disponible en la nube)
   - **Uso**: `.nuke`
   - **Descripción**: Este commando hace kick a los jugadores del servidores.
 
