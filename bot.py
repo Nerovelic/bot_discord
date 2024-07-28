@@ -27,8 +27,8 @@ bot = commands.Bot(command_prefix=".", intents=discord.Intents.all())
 baja_california_tz = pytz.timezone('America/Tijuana')
 
 # Días de apertura y cierre
-dias_cerrados = {"miércoles", "jueves"}
-dias_abiertos = {"lunes", "martes", "viernes", "sábado", "domingo"}
+dias_cerrados = {"viernes", "sábado"}
+dias_abiertos = {"lunes", "martes", "miércoles", "jueves", "domingo"}
 
 @bot.event
 async def on_ready():
@@ -40,11 +40,11 @@ async def on_ready():
     except Exception as e:
         print(e)
     
-# Función para verificar si hay algún proceso de PowerShell en ejecución
+# Función para verificar si hay algún proceso de cmd en ejecución
 def is_process_running():
     for proc in psutil.process_iter(['pid', 'name']):
         try:
-            if "powershell" in proc.info['name'].lower():
+            if "cmd" in proc.info['name'].lower():
                 return True
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
@@ -109,7 +109,7 @@ async def status(interaction: discord.Interaction):
 @bot.tree.command(name="time", description="Muestra los días que el servidor está abierto y cerrado")
 async def time(interaction: discord.Interaction):
     open_days = "lunes a domingo a las 12 AM"
-    closed_days = "miércoles y jueves a las 12 AM"
+    closed_days = "viernes y sábado a las 12 AM"
     
     await interaction.response.send_message(f"Días abiertos: {open_days}\nDías cerrados: {closed_days}")
 
@@ -126,10 +126,10 @@ async def help_command(interaction: discord.Interaction):
     await interaction.response.send_message(help_message)
 
 
-# Función para cambiar el directorio y ejecutar el script de PowerShell
-def start_powershell_script():
-    os.chdir("C:\\Users\\pc\\Desktop\\server2")
-    subprocess.run(["powershell", "-Command", "Start-Process powershell -ArgumentList '-NoExit', '-File', 'C:\\Users\\pc\\Desktop\\server2\\start.ps1'"])
+# Función para cambiar el directorio y ejecutar el script de cmd
+def start_cmd_script():
+    os.chdir("C:\\Users\\pc\\Desktop\\server3")
+    subprocess.run(["cmd", "/c", "start", "cmd", "/k", "C:\\Users\\pc\\Desktop\\server3\\\start.bat"])
 
 # Función para enviar mensaje de error con el archivo .txt
 async def send_error_with_file(interaction, message, directory):
@@ -143,32 +143,32 @@ async def send_error_with_file(interaction, message, directory):
         await interaction.followup.send(message)
 
 # Comando /start
-@bot.tree.command(name="start", description="Inicia el proceso de PowerShell si no hay ninguno en ejecución")
+@bot.tree.command(name="start", description="Inicia el proceso de cmd si no hay ninguno en ejecución")
 async def start(interaction: discord.Interaction):
     if not is_server_open():
         await interaction.response.send_message("El comando no está disponible")
         return
 
     if is_process_running():
-        await interaction.response.send_message(f"No se puede iniciar un nuevo proceso de PowerShell porque ya hay uno en ejecución, {interaction.user.mention}.")
+        await interaction.response.send_message(f"No se puede iniciar un nuevo proceso de cmd porque ya hay uno en ejecución, {interaction.user.mention}.")
         return
 
     await interaction.response.send_message("El server se está iniciando...")
 
     try:
-        start_powershell_script()
+        start_cmd_script()
 
-        # Espera 11 minutos
-        await asyncio.sleep(660)  # 660 segundos = 11 minutos
+        # Espera 5 minutos
+        await asyncio.sleep(300)  #  300 segundos = 5 minutos
 
-        # Verificar si el proceso de PowerShell se inició correctamente
+        # Verificar si el proceso de cmd se inició correctamente
         if is_process_running():
             await interaction.followup.send(f"Servidor abierto, {interaction.user.mention}.")
         else:
-            await send_error_with_file(interaction, f"Ocurrió un problema, el servidor no se abrió, {interaction.user.mention}.", 'C:\\Users\\pc\\Desktop\\server2\\crash-reports')
+            await send_error_with_file(interaction, f"Ocurrió un problema, el servidor no se abrió, {interaction.user.mention}.", 'C:\\Users\\pc\\Desktop\\server3\\crash-reports')
 
     except Exception as e:
-        await send_error_with_file(interaction, f"Hubo un error al iniciar el proceso de PowerShell: {e}, {interaction.user.mention}.", 'C:\\Users\\pc\\Desktop\\server2\\crash-reports')
+        await send_error_with_file(interaction, f"Hubo un error al iniciar el proceso de PowerShell: {e}, {interaction.user.mention}.", 'C:\\Users\\pc\\Desktop\\server3\\crash-reports')
 
 # Evento para detectar mensajes y responder con el estado del servidor
 @bot.event
@@ -224,10 +224,10 @@ async def stop(ctx):
         await ctx.send("Deteniendo el servidor...")
 
         # Llamada al script cerrado_server.py
-        subprocess.Popen(["python", "C:\\Users\\pc\\Desktop\\bot_discord\\cerrado_server.py"])
+        subprocess.Popen(["python", "C:\\Users\\pc\\Desktop\\bot_discord_cmd\\cerrado_server.py"])
 
-        # Espera 11 minutos
-        await asyncio.sleep(660)  # 660 segundos = 11 minutos
+        # Espera 1 minutos
+        await asyncio.sleep(60)  # 60 segundos = 1 minuto
 
         if is_process_running():
             await ctx.followup.send(f"Hay un problema y no se cerró el servidor, {ctx.author.mention}.")
@@ -245,7 +245,7 @@ async def stop(ctx):
         await ctx.send("Forzando el cierre del servidor...")
 
         # Llamada al script cerrado_server.py
-        subprocess.Popen(["python", "C:\\Users\\pc\\Desktop\\bot_discord\\cierre_forzado_server.py"])
+        subprocess.Popen(["python", "C:\\Users\\pc\\Desktop\\bot_discord_cmd\\cierre_forzado_server.py"])
 
         # Espera 2 minutos
         await asyncio.sleep(120)  # 120 segundos = 2 minutos
@@ -296,9 +296,9 @@ async def nuke(ctx):
         await ctx.send("🚨 Alerta 🚨 se a activado el nuke en el servidor...")
 
     # Llamada al script oppenheimer.py
-    subprocess.Popen(["python", "C:\\Users\\pc\\Desktop\\bot_discord\\oppenheimer.py"])
+    subprocess.Popen(["python", "C:\\Users\\pc\\Desktop\\bot_discord_cmd\\oppenheimer.py"])
 
-        # Espera 11 minutos
+    # Espera 11 minutos
     await asyncio.sleep(660)  # 660 segundos = 11 minutos
 
     if is_process_running():

@@ -51,18 +51,11 @@ def countdown_and_shutdown():
     pyautogui.write('stop')
     pyautogui.press('enter')
 
-    time.sleep(5)
+    # Comando de cmd para cerrar la ventana actual 
+    command = 'taskkill /IM cmd.exe /F'
 
-    pyautogui.write('a')
-    pyautogui.press('enter')
-
-    time.sleep(5)
-
-    # Comando de PowerShell para cerrar la ventana actual
-    command = 'Stop-Process -Name "powershell"'
-
-    # Ejecutar el comando de PowerShell
-    subprocess.run(["powershell", "-Command", command], shell=True)
+    # Ejecutar el comando de cmd
+    subprocess.run(command, shell=True)
 
 # Llamar a la función de cuenta regresiva y cierre del servidor
 countdown_and_shutdown()
