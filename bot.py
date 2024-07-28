@@ -234,6 +234,27 @@ async def stop(ctx):
         else:
             await ctx.followup.send(f"Servidor detenido, {ctx.author.mention}.")
 
+# Comando con prefijo para forzar el cierre del servidor (shutdown)
+@bot.command(name="shutdown", description="Sirve para forzar el cierre del servidor")
+async def stop(ctx):
+    
+    # Confirmación de recepción del comando
+    if not is_server_open():
+        await ctx.send("El comando no está disponible")
+    else:
+        await ctx.send("Forzando el cierre del servidor...")
+
+        # Llamada al script cerrado_server.py
+        subprocess.Popen(["python", "C:\\Users\\pc\\Desktop\\bot_discord\\cierre_forzado_server.py"])
+
+        # Espera 2 minutos
+        await asyncio.sleep(120)  # 120 segundos = 2 minutos
+
+        if is_process_running():
+            await ctx.followup.send(f"Hay un problema y no se cerró el servidor, {ctx.author.mention}.")
+        else:
+            await ctx.followup.send(f"Servidor detenido, {ctx.author.mention}.")
+
 # Comando de sincronización con prefijo
 @bot.command(name="sincronizar", description="Sincroniza el bot")
 async def sincronizar(ctx):
