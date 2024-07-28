@@ -14,13 +14,13 @@ def run_shutdown_logic():
     # Imprimir la fecha y hora actuales
     print(f"Fecha y hora actuales en Tijuana: {now.strftime('%Y-%m-%d %H:%M:%S')}")
 
-    # Comprobar si hoy es miércoles
-    if now.weekday() == 2:
-        # Calcular el próximo miércoles a las 12:00 AM
+    # Comprobar si hoy es viernes
+    if now.weekday() == 4:
+        # Calcular el próximo viernes a las 12:00 AM
         next_wednesday = now + timedelta(days=7)
         next_wednesday = next_wednesday.replace(hour=0, minute=0, second=0, microsecond=0)
         
-        # Calcular el tiempo en segundos hasta el próximo miércoles a las 12:00 AM
+        # Calcular el tiempo en segundos hasta el próximo viernes a las 12:00 AM
         time_until_shutdown = (next_wednesday - now).total_seconds()
 
         if time_until_shutdown > 0:
@@ -37,9 +37,9 @@ def run_shutdown_logic():
             os.system('shutdown /s /t 0')  # Apagar inmediatamente
             print("Computadora se apagará.")
         else:
-            print("Error en el cálculo del tiempo hasta el próximo miércoles.")
+            print("Error en el cálculo del tiempo hasta el próximo viernes.")
     else:
-        print("Esperando hasta el próximo miércoles...")
+        print("Esperando hasta el próximo viernes...")
 
 # Bucle principal para mantener el script activo y revisar periódicamente cada 5 horas
 while True:

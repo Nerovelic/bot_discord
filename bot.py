@@ -27,8 +27,8 @@ bot = commands.Bot(command_prefix=".", intents=discord.Intents.all())
 baja_california_tz = pytz.timezone('America/Tijuana')
 
 # Días de apertura y cierre
-dias_cerrados = {"miércoles", "jueves"}
-dias_abiertos = {"lunes", "martes", "viernes", "sábado", "domingo"}
+dias_cerrados = {"viernes", "sábado"}
+dias_abiertos = {"lunes", "martes", "miércoles", "jueves", "domingo"}
 
 @bot.event
 async def on_ready():
